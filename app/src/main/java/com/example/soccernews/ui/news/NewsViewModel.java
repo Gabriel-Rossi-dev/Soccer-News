@@ -20,6 +20,8 @@ public class NewsViewModel extends ViewModel {
     private final MutableLiveData<List<News>> news = new MutableLiveData<>();
     private final SoccerNewsApi api;
 
+
+
     public NewsViewModel() {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -28,6 +30,9 @@ public class NewsViewModel extends ViewModel {
                 .build();
 
         api  = retrofit.create(SoccerNewsApi.class);
+
+
+
         this.findNews();
     }
 
