@@ -37,3 +37,12 @@
   <p align="center">
   <img width="320" src="https://user-images.githubusercontent.com/104375832/178527392-05573bba-dc8c-46e2-aad2-2cfa2b3eae2a.png">
 </p>
+
+  <h2>Aba de favoritos<h2>
+ 
+   Favorite Fragment persistindo localmente
+  
+  <p align="center">
+  <img width="320" src="https://user-images.githubusercontent.com/104375832/178531910-70575a73-62dd-49ae-80fd-7e361b9d3617.png">
+</p>
+  
