@@ -11,15 +11,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.soccernews.MainActivity;
-import com.example.soccernews.data.remote.data.local.AppDataBase;
+import com.example.soccernews.R;
+import com.example.soccernews.data.remote.data.local.SoccerNewsDb;
 import com.example.soccernews.databinding.FragmentNewsBinding;
+import com.example.soccernews.domain.News;
 import com.example.soccernews.ui.adapter.NewsAdapter;
+import com.google.android.material.snackbar.Snackbar;
 
 public class NewsFragment extends Fragment {
 
     private FragmentNewsBinding binding;
     private NewsViewModel newsViewModel;
-    private AppDataBase db;
+    private SoccerNewsDb db;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
@@ -30,30 +33,38 @@ public class NewsFragment extends Fragment {
 
 
         binding.rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
-        newsViewModel.getNews().observe(getViewLifecycleOwner(), news -> {
-            binding.rvNews.setAdapter(new NewsAdapter(news, updatedNews -> {
-                MainActivity activity = (MainActivity) getActivity();
-                if (activity != null) {
-                    activity.getDb().newsDao().save(updatedNews);
-                }
-            }));
-        });
 
+        observeNews();
+
+        observeStatus();
+
+        binding.srlNews.setOnRefreshListener(newsViewModel::findNews);
+
+        return root;
+    }
+
+    private void observeStatus() {
         newsViewModel.getState().observe(getViewLifecycleOwner(), state -> {
             switch (state){
                 case DOING:
-                    //TODO Incluir  SwipeRefreshLayout (loading)
+                    binding.srlNews.setRefreshing(true);
                     break;
                 case DONE:
-                    //TODO Finalizar SwipeRefreshLayout (loading)
+                    binding.srlNews.setRefreshing(false);
                     break;
                 case ERROR:
-                    //TODO Finalizar SwipeRefreshLayout (loading)
-                    //TODO Mostrar um  erro
+                    binding.srlNews.setRefreshing(false);
+                    Snackbar.make(binding.srlNews, R.string.networ_error, Snackbar.LENGTH_SHORT).show();
             }
         });
-        return root;
     }
+
+    private void observeNews() {
+        newsViewModel.getNews().observe(getViewLifecycleOwner(), news -> {
+            binding.rvNews.setAdapter(new NewsAdapter(news,  newsViewModel ::saveNews));
+        });
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -61,4 +72,8 @@ public class NewsFragment extends Fragment {
     }
 
 
+    private void onFavorite(News updatedNews) {
+        MainActivity activity = (MainActivity) getActivity();
+        newsViewModel.saveNews(updatedNews);
+    }
 }

@@ -18,8 +18,8 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
-    private List<News> news;
-    private FavoriteListener favoriteListener;
+    private final List<News> news;
+    private final FavoriteListener favoriteListener;
 
     public NewsAdapter(List<News> news, FavoriteListener favoriteListener) {
         this.news = news;
@@ -30,7 +30,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         NewsItemBinding binding = NewsItemBinding.inflate(layoutInflater, parent, false);
         return new ViewHolder(binding);

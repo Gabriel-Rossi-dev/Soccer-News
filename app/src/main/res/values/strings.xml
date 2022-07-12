@@ -8,4 +8,5 @@
     <string name="cd_favorite_icon">Favorite Icon</string>
     <string name="cd_share_icon">Share Icon</string>
     <string name="cd_recycler_view">RecyclerView</string>
+    <string name="networ_error">Network Error</string>
 </resources>
